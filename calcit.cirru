@@ -477,7 +477,7 @@
         :proc $ {} (:type :expr) (:id |S1SR7xsAy4FdZ) (:time 1503375314228)
           :data $ {}
   :configs $ {} (:reload-fn |app.main/reload!)
-    :modules $ [] |quamolit.calcit/
+    :modules $ [] |quamolit.calcit/ |pointed-prompt/
     :output |src
     :port 6001
     :extension |.cljs
