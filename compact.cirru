@@ -4,12 +4,6 @@
     :modules $ [] |quamolit.calcit/ |pointed-prompt/
     :version |0.0.1
   :files $ {}
-    |app.schema $ {}
-      :ns $ quote (ns app.schema)
-      :defs $ {}
-        |task $ quote
-          def task $ {} (:text |) (:id nil) (:done? false)
-      :proc $ quote ()
     |app.comp.container $ {}
       :ns $ quote
         ns app.comp.container $ :require
@@ -30,48 +24,11 @@
                 line $ {}
                   :style $ {} (:x0 0) (:y0 0) (:x1 40) (:y1 40)
                     :stroke-style $ hsl 0 0 80
-      :proc $ quote ()
-    |app.main $ {}
-      :ns $ quote
-        ns app.main $ :require
-          app.comp.container :refer $ comp-container
-          quamolit.core :refer $ render-page configure-canvas setup-events
-          quamolit.util.time :refer $ get-tick
-          app.updater :refer $ updater-fn
+    |app.schema $ {}
+      :ns $ quote (ns app.schema)
       :defs $ {}
-        |dispatch! $ quote
-          defn dispatch! (op op-data)
-            if (list? op)
-              recur :states $ [] op op-data
-              do (; println "\"dispatch" op op-data) (; js/console.log @*store)
-                let
-                    new-tick $ get-tick
-                    new-store $ updater-fn @*store op op-data new-tick
-                  reset! *store new-store
-        |render-loop! $ quote
-          defn render-loop! (? t)
-            let
-                target $ js/document.querySelector |#app
-              ; js/console.log "\"store" @*store
-              render-page (comp-container @*store) target dispatch!
-              reset! *render-loop $ js/setTimeout
-                fn () $ reset! *raq-loop (js/requestAnimationFrame render-loop!)
-                , 20
-        |reload! $ quote
-          defn reload! () (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop!) (js/console.log "|code updated...")
-        |main! $ quote
-          defn main! () (load-console-formatter!)
-            let
-                target $ js/document.querySelector |#app
-              configure-canvas target
-              setup-events target dispatch!
-              render-loop!
-        |*render-loop $ quote (defatom *render-loop nil)
-        |*raq-loop $ quote (defatom *raq-loop nil)
-        |*store $ quote
-          defatom *store $ {}
-            :states $ {}
-      :proc $ quote ()
+        |task $ quote
+          def task $ {} (:text |) (:id nil) (:done? false)
     |app.updater $ {}
       :ns $ quote
         ns app.updater $ :require (app.schema :as schema)
@@ -83,4 +40,43 @@
               do (js/console.log "\"unknown op" op) store
               :states $ update-states store op-data
               :gc-states $ gc-states store op-data
-      :proc $ quote ()
+    |app.main $ {}
+      :ns $ quote
+        ns app.main $ :require
+          app.comp.container :refer $ comp-container
+          quamolit.core :refer $ render-page configure-canvas setup-events
+          quamolit.util.time :refer $ get-tick
+          app.updater :refer $ updater-fn
+      :defs $ {}
+        |main! $ quote
+          defn main! () (load-console-formatter!)
+            let
+                target $ js/document.querySelector |#app
+              configure-canvas target
+              setup-events target dispatch!
+              render-loop!
+        |*store $ quote
+          defatom *store $ {}
+            :states $ {}
+        |dispatch! $ quote
+          defn dispatch! (op op-data)
+            if (list? op)
+              recur :states $ [] op op-data
+              do (; println "\"dispatch" op op-data) (; js/console.log @*store)
+                let
+                    new-tick $ get-tick
+                    new-store $ updater-fn @*store op op-data new-tick
+                  reset! *store new-store
+        |*render-loop $ quote (defatom *render-loop nil)
+        |render-loop! $ quote
+          defn render-loop! (? t)
+            let
+                target $ js/document.querySelector |#app
+              ; js/console.log "\"store" @*store
+              render-page (comp-container @*store) target dispatch!
+              reset! *render-loop $ js/setTimeout
+                fn () $ reset! *raq-loop (js/requestAnimationFrame render-loop!)
+                , 20
+        |*raq-loop $ quote (defatom *raq-loop nil)
+        |reload! $ quote
+          defn reload! () (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop!) (js/console.log "|code updated...")
