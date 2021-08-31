@@ -47,6 +47,8 @@
           quamolit.core :refer $ render-page configure-canvas setup-events
           quamolit.util.time :refer $ get-tick
           app.updater :refer $ updater-fn
+          "\"./calcit.build-errors" :default build-errors
+          "\"bottom-tip" :default hud!
       :defs $ {}
         |main! $ quote
           defn main! () (load-console-formatter!)
@@ -79,4 +81,6 @@
                 , 20
         |*raq-loop $ quote (defatom *raq-loop nil)
         |reload! $ quote
-          defn reload! () (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop!) (js/console.log "|code updated...")
+          defn reload! () $ if (nil? build-errors)
+            do (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop!) (hud! "\"ok~" "\"Ok")
+            hud! "\"error" build-errors
