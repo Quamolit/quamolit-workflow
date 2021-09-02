@@ -19,11 +19,9 @@
                   {} $ :tab :portal
                 cursor $ []
                 tab $ :tab state
-              group
-                {} $ :style ({})
-                line $ {}
-                  :style $ {} (:x0 0) (:y0 0) (:x1 40) (:y1 40)
-                    :stroke-style $ hsl 0 0 80
+              group ({})
+                line $ {} (:x0 0) (:y0 0) (:x1 40) (:y1 40)
+                  :stroke-style $ hsl 0 0 80
     |app.schema $ {}
       :ns $ quote (ns app.schema)
       :defs $ {}
@@ -34,8 +32,8 @@
         ns app.updater $ :require (app.schema :as schema)
           quamolit.cursor :refer $ update-states gc-states
       :defs $ {}
-        |updater-fn $ quote
-          defn updater-fn (store op op-data tick) (; js/console.log "|store update:" op op-data tick)
+        |updater $ quote
+          defn updater (store op op-data tick) (; js/console.log "|store update:" op op-data tick)
             case-default op
               do (js/console.log "\"unknown op" op) store
               :states $ update-states store op-data
@@ -46,7 +44,7 @@
           app.comp.container :refer $ comp-container
           quamolit.core :refer $ render-page configure-canvas setup-events
           quamolit.util.time :refer $ get-tick
-          app.updater :refer $ updater-fn
+          app.updater :refer $ updater
           "\"./calcit.build-errors" :default build-errors
           "\"bottom-tip" :default hud!
       :defs $ {}
@@ -67,7 +65,7 @@
               do (; println "\"dispatch" op op-data) (; js/console.log @*store)
                 let
                     new-tick $ get-tick
-                    new-store $ updater-fn @*store op op-data new-tick
+                    new-store $ updater @*store op op-data new-tick
                   reset! *store new-store
         |*render-loop $ quote (defatom *render-loop nil)
         |render-loop! $ quote
