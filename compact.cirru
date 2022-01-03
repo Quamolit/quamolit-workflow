@@ -1,7 +1,7 @@
 
 {} (:package |app)
   :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!)
-    :modules $ [] |quamolit.calcit/ |pointed-prompt/
+    :modules $ [] |quamolit/ |pointed-prompt/
     :version |0.0.1
   :files $ {}
     |app.comp.container $ {}

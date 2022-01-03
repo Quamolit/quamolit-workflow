@@ -1,7 +1,7 @@
 
 {}
   :configs $ {} (:reload-fn |app.main/reload!) (:port 6001) (:output |src) (:compact-output? true) (:storage-key |calcit.cirru) (:version |0.0.1)
-    :modules $ [] |quamolit.calcit/ |pointed-prompt/
+    :modules $ [] |quamolit/ |pointed-prompt/
     :init-fn |app.main/main!
     :extension |.cljs
   :ir $ {} (:package |app)
