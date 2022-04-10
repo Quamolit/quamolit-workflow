@@ -1,8 +1,9 @@
 
 {} (:package |app)
   :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!)
-    :modules $ [] |quamolit/ |pointed-prompt/
+    :modules $ [] |quamolit/ |pointed-prompt/ |touch-control/
     :version |0.0.1
+  :entries $ {}
   :files $ {}
     |app.comp.container $ {}
       :ns $ quote
@@ -42,19 +43,24 @@
       :ns $ quote
         ns app.main $ :require
           app.comp.container :refer $ comp-container
-          quamolit.core :refer $ render-page configure-canvas setup-events
+          quamolit.core :refer $ render-page configure-canvas setup-events on-control-event
+          quamolit.config :refer $ dev?
           quamolit.util.time :refer $ get-tick
           app.updater :refer $ updater
           "\"./calcit.build-errors" :default build-errors
           "\"bottom-tip" :default hud!
+          touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
       :defs $ {}
         |main! $ quote
-          defn main! () (load-console-formatter!)
+          defn main! ()
+            if dev? $ load-console-formatter!
             let
                 target $ js/document.querySelector |#app
               configure-canvas target
               setup-events target dispatch!
               render-loop!
+              render-control!
+              start-control-loop! 8 on-control-event
         |*store $ quote
           defatom *store $ {}
             :states $ {}
@@ -80,5 +86,5 @@
         |*raq-loop $ quote (defatom *raq-loop nil)
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
-            do (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop!) (hud! "\"ok~" "\"Ok")
+            do (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop!) (replace-control-loop! 8 on-control-event) (hud! "\"ok~" "\"Ok")
             hud! "\"error" build-errors

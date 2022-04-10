@@ -1,9 +1,8 @@
 
 {}
-  :configs $ {} (:reload-fn |app.main/reload!) (:port 6001) (:output |src) (:compact-output? true) (:storage-key |calcit.cirru) (:version |0.0.1)
-    :modules $ [] |quamolit/ |pointed-prompt/
-    :init-fn |app.main/main!
-    :extension |.cljs
+  :users $ {}
+    |root $ {} (:avatar nil) (:name |root) (:nickname |root) (:id |root) (:password |)
+    |_yzgLY-K2 $ {} (:avatar nil) (:name |chen) (:nickname |chen) (:id |_yzgLY-K2) (:theme :star-trail) (:password |d41d8cd98f00b204e9800998ecf8427e)
   :ir $ {} (:package |app)
     :files $ {}
       |app.comp.container $ {}
@@ -393,12 +392,16 @@
                 :time 1503375314228
                 :type :expr
                 :id |H1UGpsCyEYu-
-              |u $ {}
+              |u $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612298949)
                 :data $ {}
-                  |T $ {} (:text |load-console-formatter!) (:type :leaf) (:at 1622649208245) (:by |_yzgLY-K2)
-                :type :expr
-                :at 1622649203372
-                :by |_yzgLY-K2
+                  |T $ {}
+                    :data $ {}
+                      |T $ {} (:text |load-console-formatter!) (:type :leaf) (:at 1622649208245) (:by |_yzgLY-K2)
+                    :type :expr
+                    :at 1622649203372
+                    :by |_yzgLY-K2
+                  |D $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612299459) (:text |if)
+                  |L $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612302260) (:text |dev?)
               |y $ {}
                 :data $ {}
                   |T $ {} (:author |root) (:text |let) (:time 1503375314228) (:type :leaf) (:id |BJnzpoC1Et_Z)
@@ -441,6 +444,14 @@
                     :type :expr
                     :at 1622886108483
                     :by |_yzgLY-K2
+                  |y $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612215486)
+                    :data $ {}
+                      |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612215486) (:text |render-control!)
+                  |z $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612220276)
+                    :data $ {}
+                      |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612220276) (:text |start-control-loop!)
+                      |b $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612220276) (:text |8)
+                      |h $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612220276) (:text |on-control-event)
                 :time 1503375314228
                 :type :expr
                 :id |S1jGai0JNYOZ
@@ -752,6 +763,11 @@
                         :type :expr
                         :at 1630431263226
                         :by |_yzgLY-K2
+                      |xT $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612233344)
+                        :data $ {}
+                          |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612233344) (:text |replace-control-loop!)
+                          |b $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612233344) (:text |8)
+                          |h $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612233344) (:text |on-control-event)
                     :time 1503375314228
                     :type :expr
                     :id |H1BWpjCyVF_-
@@ -811,12 +827,20 @@
                         |j $ {} (:author |root) (:text |render-page) (:time 1503375314228) (:type :leaf) (:id |HJRn2sAJ4tOb)
                         |r $ {} (:author |root) (:text |configure-canvas) (:time 1503375314228) (:type :leaf) (:id |Sy1p2oRk4tu-)
                         |v $ {} (:author |root) (:text |setup-events) (:time 1503375314228) (:type :leaf) (:id |S1eahoAkNYuZ)
+                        |w $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612197644) (:text |on-control-event)
                       :time 1503375314228
                       :type :expr
                       :id |Hy332jC1VFdZ
                   :time 1503375314228
                   :type :expr
                   :id |SkuhnjRkNt_W
+                |t $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612332258)
+                  :data $ {}
+                    |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612334797) (:text |quamolit.config)
+                    |b $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612335654) (:text |:refer)
+                    |h $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612336016)
+                      :data $ {}
+                        |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612336785) (:text |dev?)
                 |v $ {}
                   :data $ {}
                     |j $ {} (:author |root) (:text |quamolit.util.time) (:time 1503375314228) (:type :leaf) (:id |Sk762jR1EKu-)
@@ -851,12 +875,23 @@
                   :type :expr
                   :at 1630431278394
                   :by |_yzgLY-K2
+                |z $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612206039)
+                  :data $ {}
+                    |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612206039) (:text |touch-control.core)
+                    |b $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612206039) (:text |:refer)
+                    |h $ {} (:type :expr) (:by |_yzgLY-K2) (:at 1649612206039)
+                      :data $ {}
+                        |T $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612206039) (:text |render-control!)
+                        |b $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612206039) (:text |start-control-loop!)
+                        |h $ {} (:type :leaf) (:by |_yzgLY-K2) (:at 1649612206039) (:text |replace-control-loop!)
               :time 1503375314228
               :type :expr
               :id |r1132jC14Ku-
           :time 1503375314228
           :type :expr
           :id |Bk2shiRkNtu-
-  :users $ {}
-    |root $ {} (:avatar nil) (:name |root) (:nickname |root) (:id |root) (:password |)
-    |_yzgLY-K2 $ {} (:avatar nil) (:name |chen) (:nickname |chen) (:id |_yzgLY-K2) (:theme :star-trail) (:password |d41d8cd98f00b204e9800998ecf8427e)
+  :configs $ {} (:reload-fn |app.main/reload!) (:port 6001) (:output |src) (:compact-output? true) (:storage-key |calcit.cirru) (:version |0.0.1)
+    :modules $ [] |quamolit/ |pointed-prompt/ |touch-control/
+    :init-fn |app.main/main!
+    :extension |.cljs
+  :entries $ {}
