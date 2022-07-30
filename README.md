@@ -2,11 +2,11 @@
 Quamolit Workflow
 ----
 
-> project template for [quamolit.calcit](https://github.com/Quamolit/quamolit.calcit).
+> project template for [quamolit.calcit](https://github.com/Quamolit/quamolit).
 
 ### Usages
 
-Install Node.js and [Calcit](https://github.com/calcit-lang/calcit_runner.rs) first. And load dependencies in `~/.config/calcit/modules/`. The compile and run:
+Install Node.js and [Calcit](https://github.com/calcit-lang/calcit) first. And load dependencies in `~/.config/calcit/modules/`. The compile and run:
 
 ```bash
 yarn
