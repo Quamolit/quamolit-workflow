@@ -26,7 +26,7 @@ yarn dev --port 5195 --strictPort
 - `draw!` 通过类型化 Canvas API 处理 DPR 和绘制。`main!` 用作编译入口及声明检查。
 - `main.mjs` 只负责 DOM 按钮、RAF、窗口尺寸和卸载，不需要手动引用 Quamolit 内部 JavaScript 文件。
 
-当前组件计划 API 仍属实验接口。依赖暂时固定到经过下游验证的 Quamolit commit；完成应用走查并发布后再统一更新为新 tag。这个最小模板不代表完整的组件卸载/出场动画示例。
+当前组件计划 API 仍属实验接口。依赖固定到 Quamolit `0.0.18-alpha.2`，其源码与已验证的 `9e0cbb4` 提交一致。这个最小模板不代表完整的组件卸载/出场动画示例。
 
 ## 验证
 
@@ -42,7 +42,7 @@ CI 配置见 `.github/workflows/upload.yaml`。修改 Calcit snapshot 请使用 
 
 ## English
 
-A runnable Calcit 0.28.0 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and currently pinned to a verified commit pending the next release.
+A runnable Calcit 0.28.0 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to Quamolit `0.0.18-alpha.2`.
 
 ## License
 
