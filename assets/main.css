@@ -1,10 +1,8 @@
 
-@import url("@quamolit/touch-control/style/touch-control.css");
-
-body {
-  margin: 0;
-  overscroll-behavior-y: none;
-  overscroll-behavior-x: none;
-
-  font-size: 0;
-}
+html, body { margin: 0; height: 100%; background: #111725; color: #ecf3ff; font-family: system-ui, sans-serif; overscroll-behavior: none; }
+canvas { display: block; width: 100vw; height: 100vh; }
+aside { position: fixed; top: 16px; left: 16px; max-width: calc(100vw - 64px); padding: 16px; border-radius: 12px; background: #202b3ee8; }
+h1 { margin: 0 0 8px; font-size: 18px; }
+p { font-size: 13px; }
+button { border: 0; border-radius: 6px; padding: 8px 14px; background: #486b87; color: white; cursor: pointer; }
+output { display: block; margin-top: 12px; font-size: 12px; font-variant-numeric: tabular-nums; }

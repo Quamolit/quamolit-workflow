@@ -3,144 +3,176 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'app.bootstrap/main!) (:mode :js) (:reload-fn 'app.bootstrap/reload!) (:target :browser)
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
-      :modules $ [] |pointed-prompt/ |touch-control/ |js-ffi/ |quamolit/
+      :modules $ [] |js-ffi/ |quamolit/
       :type-slots $ {}
-  :files $ {}
-    'app.bootstrap $ %{} 'FileEntry
+  :files $ {} $ 'app.main
+    %{} 'FileEntry
       :defs $ {}
+        'ChartModel $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defstruct ChartModel (:start 'Number) (:revision 'Number) (:alternate? 'Bool)
+            :from $ :: 'List 'Number
+            :to $ :: 'List 'Number
+          :examples $ []
+          :schema $ :: 'StructDef
+        'Viewport $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defstruct Viewport (:width 'Number) (:height 'Number)
+          :examples $ []
+          :schema $ :: 'StructDef
+        'bar-motion $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn bar-motion (index model viewport)
+            let
+                width $ plot-width viewport
+              motion/ScalarDescriptor :id (str |bar- index) :version (:revision model) :motion $ motion/ScalarMotion :tween $ motion/ScalarTween :start
+                + (:start model) (* index 0.1)
+                , :duration 0.5 :from
+                  * width $ &list:nth (:from model) index
+                  , :to
+                    * width $ &list:nth (:to model) index
+                    , :easing (motion/Easing :smoothstep)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'quamolit.motion/ScalarDescriptor)
+            :args $ [] 'Number 'app.main/ChartModel 'app.main/Viewport
+        'bar-node $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn bar-node (index model viewport)
+            let
+                id $ str |bar- index
+                width $ plot-width viewport
+              scene/SceneNode :id id :key id :parent | :interaction (scene/SceneInteraction :none) :content
+                scene/SceneContent :rect $ scene/RectNode :x
+                  /
+                    - (:width viewport) width
+                    , 2
+                  , :y
+                    +
+                      -
+                        / (:height viewport) 2
+                        , 70
+                      * index 52
+                    , :width
+                      * width $ &list:nth (:from model) index
+                      , :height 32 :fill $ motion/ColorRgba :r
+                        + 0.2 $ * index 0.2
+                        , :g 0.7 :b 0.85 :a 1
+                , :bindings $ [] $ scene/ScalarBinding :target (scene/ScalarTarget :width) :motion-id id :version (:revision model)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'quamolit.scene-ir/SceneNode)
+            :args $ [] 'Number 'app.main/ChartModel 'app.main/Viewport
+        'declare $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn declare (props model input resources viewport)
+            let
+                original $ scene/SceneNode :id |original-line :key |original-line :parent | :bindings ([]) :interaction (scene/SceneInteraction :none) :content $ scene/SceneContent :polyline
+                  scene/PolylineNode :points
+                    []
+                      motion/Vec2 :x
+                        -
+                          / (:width viewport) 2
+                          , 20
+                        , :y $ +
+                          / (:height viewport) 2
+                          , 130
+                      motion/Vec2 :x
+                        +
+                          / (:width viewport) 2
+                          , 20
+                        , :y $ +
+                          / (:height viewport) 2
+                          , 170
+                    , :width 2 :stroke $ motion/ColorRgba :r 0.8 :g 0.8 :b 0.8 :a 1
+              component/ComponentDeclaration :scene
+                scene/SceneDocument :nodes $ concat ([] original)
+                  map (range 3)
+                    fn (index) (bar-node index model viewport)
+                , :motions $ map (range 3)
+                  fn (index) (bar-motion index model viewport)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'quamolit.component-sample/ComponentDeclaration)
+            :args $ [] 'Number 'app.main/ChartModel 'Bool 'Bool 'app.main/Viewport
+        'draw! $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn draw! (context plan width height dpr) (context .set-transform! dpr 0 0 dpr 0 0) (canvas/fill-solid-rect! context 0 0 width height |#111725) (retained/draw-plan! context plan)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'js-ffi.canvas-batches/CanvasContextHost 'quamolit.retained-component/ComponentPlan 'Number 'Number 'Number
+            :features $ #{} :js-ffi
+        'initial $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn initial ()
+            ChartModel :start 0 :revision 0 :alternate? false :from ([] 0 0 0) :to $ [] 0.4 0.7 1
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'app.main/ChartModel)
+            :args $ []
         'main! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn main! () &unit
+          :code $ quote $ defn main! ()
+            assert |invalid-template-start $ = 4 $ count
+              :nodes $ :scene $ start (initial) 0 (viewport 1000 700)
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
+        'plot-width $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn plot-width (viewport)
+            let
+                available $ - (:width viewport) 64
+              if (< available 16) 16 $ if (> available 480) 480 available
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'Number)
+            :args $ [] 'app.main/Viewport
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
-      :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote $ ns app.bootstrap
-    'app.comp.container $ %{} 'FileEntry
-      :defs $ {} $ 'comp-container
-        %{} 'CodeEntry (:doc |)
-          :code $ quote $ defcomp comp-container (store)
-            let
-                states $ :states store
-                state $ either (:data states)
-                  {} $ :tab :portal
-                cursor $ []
-                tab $ :tab state
-              group ({})
-                line $ {} (:x0 0) (:y0 0) (:x1 40) (:y1 40)
-                  :stroke-style $ hsl 0 0 80
+        'request $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn request (model time viewport)
+            component/ComponentRequest :id |starter-chart :time time :props 1 :model model :input false :resources false :viewport viewport :versions $ direct/FrameVersions :component 1 :motion (:revision model) :model (:revision model) :input 0 :resources 0 :viewport $ +
+              * 100000 $ :width viewport
+              :height viewport
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic
-      :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote $ ns app.comp.container
-          :require
-            quamolit.util.string :refer $ hsl
-            quamolit.alias :refer $ defcomp group >> line
-            quamolit.render.element :refer $ translate button
-    'app.main $ %{} 'FileEntry
-      :defs $ {}
-        '*raq-loop $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *raq-loop nil
+          :schema $ :: 'Fn $ {}
+            :args $ [] 'app.main/ChartModel 'Number 'app.main/Viewport
+            :return $ :: 'quamolit.component-sample/ComponentRequest 'Number 'app.main/ChartModel 'Bool 'Bool 'app.main/Viewport
+        'start $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn start (model time viewport)
+            retained/build-component-plan (request model time viewport) declare
           :examples $ []
-          :schema $ :: 'Dynamic
-        '*render-loop $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *render-loop nil
+          :schema $ :: 'Fn $ {} (:return 'quamolit.retained-component/ComponentPlan)
+            :args $ [] 'app.main/ChartModel 'Number 'app.main/Viewport
+        'toggle $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn toggle (model time)
+            ChartModel :start time :revision
+              inc $ :revision model
+              , :alternate?
+                not $ :alternate? model
+                , :from (values-at model time) :to $ if (:alternate? model) ([] 0.4 0.7 1) ([] 1 0.35 0.8)
           :examples $ []
-          :schema $ :: 'Dynamic
-        '*store $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *store
-            {} $ :states $ {}
+          :schema $ :: 'Fn $ {} (:return 'app.main/ChartModel)
+            :args $ [] 'app.main/ChartModel 'Number
+        'update-plan $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn update-plan (plan model time viewport)
+            retained/update-component-plan plan (request model time viewport) declare
           :examples $ []
-          :schema $ :: 'Dynamic
-        'dispatch! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn dispatch! (op op-data)
-            if (list? op)
-              recur :states $ [] op op-data
-              do (; println |dispatch op op-data) (; js/console.log @*store)
-                let
-                    new-tick $ get-tick
-                    new-store $ updater @*store op op-data new-tick
-                  reset! *store new-store
+          :schema $ :: 'Fn $ {} (:return 'quamolit.retained-component/ComponentPlan)
+            :args $ [] 'quamolit.retained-component/ComponentPlan 'app.main/ChartModel 'Number 'app.main/Viewport
+        'values-at $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn values-at (model time)
+            map-indexed (:from model)
+              fn (index value)
+                ui/tween-at
+                  + (:start model) (* index 0.1)
+                  , 0.5 value
+                    &list:nth (:to model) index
+                    , time
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic 'Dynamic
-            :features $ #{} :js-ffi
-        'main! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn main! ()
-            if dev? $ load-console-formatter!
-            let
-                target $ js/document.querySelector |#app
-              configure-canvas target
-              setup-events target dispatch!
-              render-loop! 0
-              render-control!
-              start-control-loop! 8 on-control-event
+          :schema $ :: 'Fn $ {}
+            :args $ [] 'app.main/ChartModel 'Number
+            :return $ :: 'List 'Number
+        'viewport $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn viewport (width height)
+            assert |invalid-template-viewport $ and (motion/finite-number? width) (motion/finite-number? height) (> width 0) (> height 0)
+            Viewport :width width :height height
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ []
-            :features $ #{} :js-ffi
-        'reload! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn reload! ()
-            if (nil? build-errors)
-              do (js/clearTimeout @*render-loop) (js/cancelAnimationFrame @*raq-loop) (render-loop! 0) (replace-control-loop! 8 on-control-event) (hud! |ok~ |Ok)
-              hud! |error build-errors
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ []
-            :features $ #{} :js-ffi
-        'render-loop! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn render-loop! (t)
-            let
-                target $ js/document.querySelector |#app
-              ; js/console.log |store @*store
-              render-page (comp-container @*store) target dispatch!
-              reset! *render-loop $ js/setTimeout
-                fn () $ reset! *raq-loop $ js/requestAnimationFrame render-loop!
-                , 20
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic
-            :features $ #{} :js-ffi
+          :schema $ :: 'Fn $ {} (:return 'app.main/Viewport)
+            :args $ [] 'Number 'Number
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
-          :require
-            app.comp.container :refer $ comp-container
-            quamolit.core :refer $ render-page configure-canvas setup-events on-control-event
-            quamolit.config :refer $ dev?
-            quamolit.util.time :refer $ get-tick
-            app.updater :refer $ updater
-            |./calcit.build-errors :default build-errors
-            |bottom-tip :default hud!
-            touch-control.core :refer $ render-control! start-control-loop! replace-control-loop!
-    'app.schema $ %{} 'FileEntry
-      :defs $ {} $ 'task
-        %{} 'CodeEntry (:doc |)
-          :code $ quote $ def task
-            {} (:text |) (:id nil) (:done? false)
-          :examples $ []
-          :schema $ :: 'Dynamic
-      :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote $ ns app.schema
-    'app.updater $ %{} 'FileEntry
-      :defs $ {} $ 'updater
-        %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn updater (store op op-data tick) (; js/console.log "|store update:" op op-data tick)
-            case-default op
-              do (js/console.log "|unknown op" op) store
-              :states $ update-states store op-data
-              :gc-states $ gc-states store op-data
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic 'Dynamic 'Dynamic 'Dynamic
-            :features $ #{} :js-ffi
-      :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote $ ns app.updater
-          :require (app.schema :as schema)
-            quamolit.cursor :refer $ update-states gc-states
+          :require (quamolit.motion :as motion) (quamolit.ui-motion :as ui) (quamolit.scene-ir :as scene) (quamolit.component-sample :as component) (quamolit.direct-frame :as direct) (quamolit.retained-component :as retained) (js-ffi.canvas-batches :as canvas)
