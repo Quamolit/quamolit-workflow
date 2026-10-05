@@ -26,7 +26,7 @@ yarn dev --port 5195 --strictPort
 - `draw!` 通过类型化 Canvas API 处理 DPR 和绘制。`main!` 用作编译入口及声明检查。
 - `main.mjs` 只负责 DOM 按钮、RAF、窗口尺寸和卸载，不需要手动引用 Quamolit 内部 JavaScript 文件。
 
-当前组件计划 API 仍属实验接口。依赖固定到 Quamolit `0.0.18-alpha.3`，其源码与已验证的 `b419897` 提交一致。这个最小模板不代表完整的组件卸载/出场动画示例。
+当前组件计划 API 仍属实验接口。依赖固定到已发布 Quamolit `0.0.18-alpha.4`，包含公共 tween 精确终帧修复，不引用未发布 main 或提交 hash。这个最小模板不代表完整的组件卸载/出场动画示例。
 
 ## 验证
 
@@ -40,9 +40,20 @@ yarn format:check
 
 CI 配置见 `.github/workflows/upload.yaml`。修改 Calcit snapshot 请使用 CLI 的 `edit`/`tree`/`cursor`/`config` 接口，不要将其当成生成文件或手工批量改写。
 
+## 前端部署
+
+COS 只上传 `dist/`，使用正式 `cos-upload-action@v1.2.0` 的内置
+`public-base-url` 逐文件校验，不增加上传验证脚本。PR CDN 前缀为
+`Quamolit/quamolit-workflow/pr/<PR编号>/<run>/<attempt>/`，原
+`https://repo.tiye.me/Quamolit/quamolit-workflow/pr/<PR编号>/` 预览入口不变。
+原生产构建先通过浏览器回归，再从同一源码构建 CDN 资源，校验成功后上传 HTML。
+仅同仓库 PR 和原手动部署事件上传；fork PR 只测试 / 构建，main push 不部署。
+生产 COS 前缀 `Quamolit/quamolit-workflow/`、web-assets 路径和手动部署条件不变，
+队列不取消执行中的上传。需要仓库或组织提供 `COS_BUCKET`、`COS_SECRET_ID`、`COS_SECRET_KEY`。
+
 ## English
 
-A runnable Calcit 0.28.0 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to Quamolit `0.0.18-alpha.3`.
+A runnable Calcit 0.28.0 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to published Quamolit `0.0.18-alpha.4`, including the tween endpoint fix.
 
 ## License
 
