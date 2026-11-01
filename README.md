@@ -6,7 +6,7 @@ Quamolit 的 Calcit 项目模板 / A Calcit starter for Quamolit.
 
 ## 开始使用
 
-需要 Node.js 24、Calcit CLI 0.28.0 和 `caps`。Calcit JavaScript runtime 同步使用 0.28.0，Yarn 使用 `node-modules` linker。
+需要 Node.js 24、Calcit CLI 0.32.1 和 `caps`。Calcit JavaScript runtime 同步使用 0.32.1，Yarn 使用 `node-modules` linker。
 
 ```bash
 corepack enable
@@ -26,7 +26,7 @@ yarn dev --port 5195 --strictPort
 - `draw!` 通过类型化 Canvas API 处理 DPR 和绘制。`main!` 用作编译入口及声明检查。
 - `main.mjs` 只负责 DOM 按钮、RAF、窗口尺寸和卸载，不需要手动引用 Quamolit 内部 JavaScript 文件。
 
-当前组件计划 API 仍属实验接口。依赖固定到已发布 Quamolit `0.0.18-alpha.4`，包含公共 tween 精确终帧修复，不引用未发布 main 或提交 hash。这个最小模板不代表完整的组件卸载/出场动画示例。
+本次升级同步迁移类型标注语法，游戏规则、动画时间和 Canvas 画面校验要求保持。当前组件计划 API 仍属实验接口。依赖固定到已发布 Quamolit `0.0.18`，包含公共 tween 精确终帧修复，不引用未发布 main 或提交 hash。这个最小模板不代表完整的组件卸载/出场动画示例。
 
 ## 验证
 
@@ -53,7 +53,7 @@ COS 只上传 `dist/`，使用正式 `cos-upload-action@v1.2.0` 的内置
 
 ## English
 
-A runnable Calcit 0.28.0 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to published Quamolit `0.0.18-alpha.4`, including the tween endpoint fix.
+A runnable Calcit 0.32.1 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to published Quamolit `0.0.18`, including the tween endpoint fix.
 
 ## License
 
