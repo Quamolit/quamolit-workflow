@@ -11,13 +11,13 @@
     %{} 'FileEntry
       :defs $ {}
         'ChartModel $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct ChartModel (:start 'Number) (:revision 'Number) (:alternate? 'Bool)
-            :from $ quote $ List Number
-            :to $ quote $ List Number
+          :code $ quote $ defstruct ChartModel (:start Number) (:revision Number) (:alternate? Bool)
+            :from $ List Number
+            :to $ List Number
           :examples $ []
           :schema $ quote StructDef
         'Viewport $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct Viewport (:width 'Number) (:height 'Number)
+          :code $ quote $ defstruct Viewport (:width Number) (:height Number)
           :examples $ []
           :schema $ quote StructDef
         'bar-motion $ %{} 'CodeEntry (:doc |)
