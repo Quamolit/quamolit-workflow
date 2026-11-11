@@ -32,7 +32,7 @@
                     * width $ &list:nth (:to model) index
                     , :easing (motion/Easing :smoothstep)
           :examples $ []
-          :schema $ quote $ Fn Number app.main/ChartModel app.main/Viewport (-> quamolit.motion/ScalarDescriptor)
+          :schema $ quote $ Fn Number ChartModel Viewport (-> motion/ScalarDescriptor)
         'bar-node $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn bar-node (index model viewport)
             let
@@ -56,7 +56,7 @@
                         , :g 0.7 :b 0.85 :a 1
                 , :bindings $ [] $ scene/ScalarBinding :target (scene/ScalarTarget :width) :motion-id id :version (:revision model)
           :examples $ []
-          :schema $ quote $ Fn Number app.main/ChartModel app.main/Viewport (-> quamolit.scene-ir/SceneNode)
+          :schema $ quote $ Fn Number ChartModel Viewport (-> scene/SceneNode)
         'declare $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn declare (props model input resources viewport)
             let
@@ -85,16 +85,16 @@
                 , :motions $ map (range 3)
                   fn (index) (bar-motion index model viewport)
           :examples $ []
-          :schema $ quote $ Fn Number app.main/ChartModel Bool Bool app.main/Viewport (-> quamolit.component-sample/ComponentDeclaration)
+          :schema $ quote $ Fn Number ChartModel Bool Bool Viewport (-> component/ComponentDeclaration)
         'draw! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn draw! (context plan width height dpr) (context .set-transform! dpr 0 0 dpr 0 0) (canvas/fill-solid-rect! context 0 0 width height |#111725) (retained/draw-plan! context plan)
           :examples $ []
-          :schema $ quote $ Fn js-ffi.canvas-batches/CanvasContextHost quamolit.retained-component/ComponentPlan Number Number Number (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn canvas/CanvasContextHost retained/ComponentPlan Number Number Number (-> Unit) (:features :js-ffi)
         'initial $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn initial ()
             ChartModel :start 0 :revision 0 :alternate? false :from ([] 0 0 0) :to $ [] 0.4 0.7 1
           :examples $ []
-          :schema $ quote $ Fn (-> app.main/ChartModel)
+          :schema $ quote $ Fn (-> ChartModel)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             assert |invalid-template-start $ = 4 $ .len
@@ -108,7 +108,7 @@
                 available $ - (:width viewport) 64
               if (< available 16) 16 $ if (> available 480) 480 available
           :examples $ []
-          :schema $ quote $ Fn app.main/Viewport (-> Number)
+          :schema $ quote $ Fn Viewport (-> Number)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () &unit
           :examples $ []
@@ -119,13 +119,13 @@
               * 100000 $ :width viewport
               :height viewport
           :examples $ []
-          :schema $ quote $ Fn app.main/ChartModel Number app.main/Viewport
-            -> $ quamolit.component-sample/ComponentRequest Number app.main/ChartModel Bool Bool app.main/Viewport
+          :schema $ quote $ Fn ChartModel Number Viewport
+            -> $ component/ComponentRequest Number ChartModel Bool Bool Viewport
         'start $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn start (model time viewport)
             retained/build-component-plan (request model time viewport) declare
           :examples $ []
-          :schema $ quote $ Fn app.main/ChartModel Number app.main/Viewport (-> quamolit.retained-component/ComponentPlan)
+          :schema $ quote $ Fn ChartModel Number Viewport (-> retained/ComponentPlan)
         'toggle $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn toggle (model time)
             ChartModel :start time :revision
@@ -134,12 +134,12 @@
                 not $ :alternate? model
                 , :from (values-at model time) :to $ if (:alternate? model) ([] 0.4 0.7 1) ([] 1 0.35 0.8)
           :examples $ []
-          :schema $ quote $ Fn app.main/ChartModel Number (-> app.main/ChartModel)
+          :schema $ quote $ Fn ChartModel Number (-> ChartModel)
         'update-plan $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn update-plan (plan model time viewport)
             retained/update-component-plan plan (request model time viewport) declare
           :examples $ []
-          :schema $ quote $ Fn quamolit.retained-component/ComponentPlan app.main/ChartModel Number app.main/Viewport (-> quamolit.retained-component/ComponentPlan)
+          :schema $ quote $ Fn retained/ComponentPlan ChartModel Number Viewport (-> retained/ComponentPlan)
         'values-at $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn values-at (model time)
             map-indexed (:from model)
@@ -150,14 +150,14 @@
                     &list:nth (:to model) index
                     , time
           :examples $ []
-          :schema $ quote $ Fn app.main/ChartModel Number
+          :schema $ quote $ Fn ChartModel Number
             -> $ List Number
         'viewport $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn viewport (width height)
             assert |invalid-template-viewport $ and (motion/finite-number? width) (motion/finite-number? height) (> width 0) (> height 0)
             Viewport :width width :height height
           :examples $ []
-          :schema $ quote $ Fn Number Number (-> app.main/Viewport)
+          :schema $ quote $ Fn Number Number (-> Viewport)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (quamolit.motion :as motion) (quamolit.ui-motion :as ui) (quamolit.scene-ir :as scene) (quamolit.component-sample :as component) (quamolit.direct-frame :as direct) (quamolit.retained-component :as retained) (js-ffi.canvas-batches :as canvas)
