@@ -6,7 +6,7 @@ Quamolit 的 Calcit 项目模板 / A Calcit starter for Quamolit.
 
 ## 开始使用
 
-需要 Node.js 24、Calcit CLI 0.41.0 和 `caps`。Calcit JavaScript runtime 同步使用 0.41.0，Yarn 使用 `node-modules` linker。
+需要 Node.js 24、Calcit CLI 0.41.1 和 `caps`。Calcit JavaScript runtime 同步使用 0.41.1，Yarn 使用 `node-modules` linker。
 
 ```bash
 corepack enable
@@ -53,7 +53,7 @@ COS 只上传 `dist/`，使用正式 `cos-upload-action@v1.3.0` 的内置
 
 ## English
 
-A runnable Calcit 0.41.0 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to published Quamolit `0.0.20`, including the tween endpoint fix.
+A runnable Calcit 0.41.1 starter using Quamolit's public typed component declarations, motion sampling and retained plans. It preserves the original line and adds three staggered chart bars with interruptible data transitions. Browser JavaScript handles lifecycle only. Run `yarn compile`, then `yarn dev`; `yarn test` checks production rendering and deterministic frames. The component-plan API is experimental and pinned to published Quamolit `0.0.20`, including the tween endpoint fix.
 
 ## License
 
